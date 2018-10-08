@@ -1,13 +1,15 @@
 package com.github.cythara;
 
-import com.github.cythara.tuning.GuitarTuning;
+import com.github.cythara.data.PitchAdjuster;
+import com.github.cythara.data.tuning.GuitarTuning;
+import com.github.cythara.domain.PitchComparator;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.github.cythara.NoteName.E;
-import static com.github.cythara.NoteName.G;
-import static com.github.cythara.tuning.GuitarTuning.Pitch;
+import static com.github.cythara.domain.NoteName.E;
+import static com.github.cythara.domain.NoteName.G;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch;
 import static org.hamcrest.Matchers.is;
 
 public class PitchAdjusterTest {
@@ -36,22 +38,22 @@ public class PitchAdjusterTest {
         PitchAdjuster pitchAdjuster = new PitchAdjuster(446f);
         float adjustedPitch = pitchAdjuster.adjustPitch(198.67f);
 
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getName(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getName(),
                 is(G));
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getSign(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getSign(),
                 is(""));
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getOctave(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getOctave(),
                 is(3));
 
         pitchAdjuster = new PitchAdjuster(432f);
         adjustedPitch = pitchAdjuster.adjustPitch(80.91f);
 
 
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getName(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getName(),
                 is(E));
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getSign(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getSign(),
                 is(""));
-        Assert.assertThat(PitchComparator.retrieveNote(adjustedPitch).closest.getOctave(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getOctave(),
                 is(2));
     }
 }

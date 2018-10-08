@@ -9,6 +9,10 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.rule.GrantPermissionRule;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.github.cythara.domain.PitchDifference;
+import com.github.cythara.presentation.main.MainActivity;
+import com.github.cythara.presentation.view.TunerView;
+
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static android.support.test.rule.GrantPermissionRule.grant;
-import static com.github.cythara.tuning.GuitarTuning.Pitch.*;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch.*;
 import static java.lang.String.format;
 
 @RunWith(AndroidJUnit4.class)

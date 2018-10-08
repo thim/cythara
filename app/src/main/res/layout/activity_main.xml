@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?attr/activityBackground"
     android:orientation="vertical"
-    tools:context="com.github.cythara.MainActivity">
+    tools:context="com.github.cythara.presentation.main.MainActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -14,17 +15,19 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:theme="@style/AppTheme"
-        app:popupTheme="@style/AppTheme" />
+        app:popupTheme="@style/AppTheme"
+        app:subtitleTextColor="@color/white"
+        app:titleTextColor="@color/white"
+        tools:title="@string/app_name" />
 
     <com.jaredrummler.materialspinner.MaterialSpinner
         android:id="@+id/tuning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.github.cythara.TunerView
+    <com.github.cythara.presentation.view.TunerView
         android:id="@+id/pitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </LinearLayout>

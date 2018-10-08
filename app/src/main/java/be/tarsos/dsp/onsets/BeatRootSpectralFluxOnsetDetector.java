@@ -75,7 +75,7 @@ public class BeatRootSpectralFluxOnsetDetector implements AudioProcessor, OnsetD
 	 *  semitone, then logarithmic with a semitone resolution.  e.g. for
 	 *  44.1kHz sampling rate and fftSize of 2048 (46ms), bin spacing is
 	 *  21.5Hz, which is mapped linearly for bins 0-34 (0 to 732Hz), and
-	 *  logarithmically for the remaining bins (midi notes 79 to 127, bins 35 to
+	 *  logarithmically for the remaining bins (midi noteLetters 79 to 127, bins 35 to
 	 *  83), where all energy above note 127 is mapped into the final bin. */
 	private int[] freqMap;
 

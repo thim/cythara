@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#FF212121</color>
-    <color name="colorTextDark">#DDFFFFFF</color>
-    <color name="colorTextDarkCanvas">#ff9412</color>
-    <color name="red_light">#46e10000</color>
-    <color name="green_light">#4600ff00</color>
-    <color name="red_dark">#20e10000</color>
-    <color name="green_dark">#2000ff00</color>
+    <color name="colorPrimary">#607D8B</color>
+    <color name="colorPrimaryDark">#455A64</color>
+    <color name="colorPrimaryLight">#CFD8DC</color>
+    <color name="colorAccent">#00BCD4</color>
+
+    <!-- LIGHT -->
+    <color name="textColorPrimary">#444</color>
+    <color name="textColorSecondary">#757575</color>
+    <color name="backgroundColor">#eee</color>
+    <color name="headerColor">#ccc</color>
+    <color name="foregroundColor">#444</color>
+    <color name="selectionColor">#22000000</color>
+
+    <!-- GAUGE COLORS-->
+    <color name="gaugePrimaryColor">@color/grayDark</color>
+    <color name="gaugeSecondaryColor">@color/gray</color>
+
+
+    <!-- COLORS -->
+    <color name="transparent">@android:color/transparent</color>
+
+    <color name="color_red">#e63946</color>
+    <color name="color_blue_white">#f1faee</color>
+    <color name="color_blue_light">#a8dadc</color>
+    <color name="color_blue">#457b9d</color>
+    <color name="color_blue_dark">#1d3557</color>
+
+    <color name="gray">#ccc</color>
+    <color name="grayMedium">#888</color>
+    <color name="grayDark">#444</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>

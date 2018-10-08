@@ -1,12 +1,15 @@
 package com.github.cythara;
 
+import com.github.cythara.domain.PitchComparator;
+import com.github.cythara.domain.PitchDifference;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.github.cythara.tuning.GuitarTuning.Pitch.*;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.closeTo;
 
@@ -21,7 +24,7 @@ public class PitchComparatorTest {
         expectations.put(128.415f, new PitchDifference(D3, -232.0232233030192));
 
         for (Float pitch : expectations.keySet()) {
-            PitchDifference actual = PitchComparator.retrieveNote(pitch);
+            PitchDifference actual = PitchComparator.INSTANCE.retrieveNote(pitch);
             PitchDifference expected = expectations.get(pitch);
 
             Assert.assertThat(actual.closest, is(expected.closest));

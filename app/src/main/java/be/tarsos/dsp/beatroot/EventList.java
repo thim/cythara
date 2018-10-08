@@ -103,7 +103,7 @@ class BTFileParseException extends RuntimeException {
 } // class BTFileParseException
 
 
-// Process the strings which label extra features of notes in match files.
+// Process the strings which label extra features of noteLetters in match files.
 // We assume no more than 32 distinct labels in a file.
 class Flags {
 

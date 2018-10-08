@@ -61,7 +61,7 @@ THE SOFTWARE.
  * algorithm. They all depend on the context and the tradeoffs acceptable in
  * terms of speed and latency. The context includes the quality and 'cleanness'
  * of the audio : obviously polyphonic sounds (multiple instruments playing
- * different notes at the same time) are extremely difficult to track,
+ * different noteLetters at the same time) are extremely difficult to track,
  * percussive or noisy audio has no pitch, most real-life audio have some noisy
  * moments, some instruments have a lot of harmonics, etc... </p>
  * <p>

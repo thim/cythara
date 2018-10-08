@@ -1,14 +1,17 @@
 package com.github.cythara;
 
+import com.github.cythara.domain.Note;
+import com.github.cythara.domain.PitchDifference;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.github.cythara.Sampler.*;
-import static com.github.cythara.tuning.GuitarTuning.Pitch.B3;
-import static com.github.cythara.tuning.GuitarTuning.Pitch.E2;
-import static com.github.cythara.tuning.GuitarTuning.Pitch.G3;
+import static com.github.cythara.domain.Sampler.*;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch.B3;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch.E2;
+import static com.github.cythara.data.tuning.GuitarTuning.Pitch.G3;
 import static org.hamcrest.CoreMatchers.either;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.closeTo;

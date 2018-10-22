@@ -14,6 +14,7 @@ import java.util.*
 class TunerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ConstraintLayout(context, attrs) {
     private val gaugeView: GaugeView
     private val note: TextView
+    private val noteOctave: TextView
     private val reference: TextView
     private val difference: TextView
     private var useScientificNotation: Boolean = false
@@ -26,6 +27,7 @@ class TunerView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
         gaugeView = findViewById(R.id.gauge)
 
         note = findViewById(R.id.note)
+        noteOctave = findViewById(R.id.note_octave)
         reference = findViewById(R.id.reference)
         difference = findViewById(R.id.difference)
 
@@ -39,14 +41,15 @@ class TunerView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
 
     fun setPitchDifference(pitchDifference: PitchDifference?) {
         if (pitchDifference != null) {
-            gaugeView.setPitchDifference(pitchDifference)
+            gaugeView.setValue(pitchDifference.deviation.toFloat())
 
             val octave = getOctave(pitchDifference.closest.octave).toString()
             var noteStr = pitchDifference.closest.name
             if (!useScientificNotation) {
                 noteStr = noteName(pitchDifference.closest.name)
             }
-            note.text = "$noteStr $octave"
+            note.text = "$noteStr"
+            noteOctave.text = octave
             difference.text = formatter.format(pitchDifference.deviation) + "¢"
         }
         displayReferencePitch()
@@ -66,7 +69,7 @@ class TunerView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             noteStr = "A4 "
         }
 
-        reference.text = noteStr + String.format(Locale.ENGLISH, "= %d Hz", referencePitch)
+        reference.text = "Ref: "+ noteStr + String.format(Locale.ENGLISH, "= %d Hz", referencePitch)
     }
 
     private fun getOctave(octave: Int): Int {

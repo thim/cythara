@@ -1,7 +1,7 @@
 package com.github.cythara.data
 
 class PitchAdjuster {
-    private val adjustmentFactor: Float
+    private var adjustmentFactor: Float
 
     internal constructor() {
         adjustmentFactor = 1f
@@ -11,11 +11,15 @@ class PitchAdjuster {
         adjustmentFactor = referencePitch / A440
     }
 
+    fun setReference(referencePitch: Float) {
+        adjustmentFactor = referencePitch / A440
+    }
+
     fun adjustPitch(pitch: Float): Float {
         return pitch / adjustmentFactor
     }
 
     companion object {
-        private val A440 = 440f
+        private const val A440 = 440f
     }
 }

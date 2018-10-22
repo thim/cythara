@@ -36,13 +36,14 @@ data class Note(val name: String, val frequency: Float, val octave: Int) {
     fun getShortRep(): String = name + Int.toString()
 
     companion object {
+        @JvmStatic
         fun createNote(short: String): Note {
             val name: String = if (short.length == 3) {
                 short.substring(0, 1)
             } else {
                 short[0].toString()
             }
-            val octave = short[short.length - 1].toInt()
+            val octave = short.substring(short.length - 1).toInt()
 
             return Note(name, octave)
         }

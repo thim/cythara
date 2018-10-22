@@ -1,15 +1,15 @@
 package com.github.cythara;
 
 import com.github.cythara.data.PitchAdjuster;
-import com.github.cythara.data.tuning.GuitarTuning;
+import com.github.cythara.data.tuning.CelloTuning;
+import com.github.cythara.data.tuning.ChromaticTuning;
+import com.github.cythara.domain.Note;
 import com.github.cythara.domain.PitchComparator;
+import com.github.cythara.domain.Tuning;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import static com.github.cythara.domain.NoteName.E;
-import static com.github.cythara.domain.NoteName.G;
-import static com.github.cythara.data.tuning.GuitarTuning.Pitch;
 import static org.hamcrest.Matchers.is;
 
 public class PitchAdjusterTest {
@@ -18,7 +18,7 @@ public class PitchAdjusterTest {
     public void pitch_is_unchanged_for_A440() {
         PitchAdjuster pitchAdjuster = new PitchAdjuster();
 
-        for (Pitch pitch : GuitarTuning.Pitch.values()) {
+        for (Note pitch : new CelloTuning().getNotes()) {
             Assert.assertThat(pitchAdjuster.adjustPitch(pitch.getFrequency()),
                     is(pitch.getFrequency()));
         }
@@ -38,22 +38,20 @@ public class PitchAdjusterTest {
         PitchAdjuster pitchAdjuster = new PitchAdjuster(446f);
         float adjustedPitch = pitchAdjuster.adjustPitch(198.67f);
 
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getName(),
-                is(G));
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getSign(),
-                is(""));
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getOctave(),
+        Tuning tuning = new ChromaticTuning();
+
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(tuning,adjustedPitch).getClosest().getName(),
+                is("G"));
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(tuning,adjustedPitch).getClosest().getOctave(),
                 is(3));
 
         pitchAdjuster = new PitchAdjuster(432f);
         adjustedPitch = pitchAdjuster.adjustPitch(80.91f);
 
 
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getName(),
-                is(E));
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getSign(),
-                is(""));
-        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(adjustedPitch).closest.getOctave(),
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(tuning,adjustedPitch).getClosest().getName(),
+                is("E"));
+        Assert.assertThat(PitchComparator.INSTANCE.retrieveNote(tuning,adjustedPitch).getClosest().getOctave(),
                 is(2));
     }
 }

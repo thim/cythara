@@ -4,14 +4,15 @@ import java.util.*
 
 object Sampler {
 
+    @JvmStatic
     fun calculateAverageDifference(samples: List<PitchDifference>): PitchDifference? {
         val mostFrequentNote = extractMostFrequentNote(samples)
-        val filteredSamples = filterByNote(samples, mostFrequentNote)
 
         var deviationSum = 0.0
         var sameNoteCount = 0
-        for (pitchDifference in filteredSamples) {
-            deviationSum += pitchDifference.deviation
+
+        samples.filter { it.closest == mostFrequentNote }.forEach {
+            deviationSum += it.deviation
             sameNoteCount++
         }
 
@@ -23,42 +24,14 @@ object Sampler {
         return null
     }
 
-    private fun filterByNote(samples: List<PitchDifference>, note: Note?): List<PitchDifference> {
-        val filteredSamples = ArrayList<PitchDifference>()
-
-        for (sample in samples) {
-            if (sample.closest === note) {
-                filteredSamples.add(sample)
-            }
-        }
-
-        return filteredSamples
-    }
-
-    private fun extractMostFrequentNote(samples: List<PitchDifference>): Note? {
+    @JvmStatic
+    fun extractMostFrequentNote(samples: List<PitchDifference>): Note? {
         val noteFrequencies = HashMap<Note, Int>()
-
-        for (pitchDifference in samples) {
-            val closest = pitchDifference.closest
-            if (noteFrequencies.containsKey(closest)) {
-                val count = noteFrequencies[closest]
-                noteFrequencies[closest] = count!! + 1
-            } else {
-                noteFrequencies[closest] = 1
-            }
+        samples.forEach {
+            val count = noteFrequencies[it.closest] ?: 0
+            noteFrequencies[it.closest] = count + 1
         }
 
-        var mostFrequentNote: Note? = null
-        var mostOccurrences = 0
-        for (note in noteFrequencies.keys) {
-            noteFrequencies[note]?.let {
-                if (it > mostOccurrences) {
-                    mostFrequentNote = note
-                    mostOccurrences = it
-                }
-            }
-        }
-
-        return mostFrequentNote
+        return noteFrequencies.maxBy { it.value }?.key
     }
 }

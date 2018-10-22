@@ -7,12 +7,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.support.design.widget.BottomSheetBehavior
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
-import android.util.TypedValue
 import android.view.ContextThemeWrapper
 import android.view.Menu
 import android.view.MenuItem
@@ -20,19 +20,39 @@ import android.view.WindowManager
 import com.github.cythara.CytharaApplication
 import com.github.cythara.R
 import com.github.cythara.domain.PitchDifference
-import com.github.cythara.presentation.NumberPickerDialog
 import com.github.cythara.presentation.view.TunerView
-import com.jaredrummler.materialspinner.MaterialSpinner
-import com.jaredrummler.materialspinner.MaterialSpinnerAdapter
-import com.shawnlin.numberpicker.NumberPicker
+import kotlinx.android.synthetic.main.bottom_sheet_main.*
 import java.util.*
 
-class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelectedListener<Any>, NumberPicker.OnValueChangeListener {
+class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
 
     private val presenter = MainPresenter(this)
+    private lateinit var tunerView: TunerView
+    private lateinit var adapter: TuningAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         lifecycle.addObserver(presenter)
+
+        enableTheme()
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        tunerView = findViewById(R.id.pitch)
+
+        val bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+
+        bottom_title.setOnClickListener {
+            if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+                bottom_icon.setImageResource(R.drawable.ic_chevron_down)
+            } else {
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                bottom_icon.setImageResource(R.drawable.ic_chevron_up)
+            }
+        }
+
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
 
@@ -43,10 +63,9 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
             startRecording()
         }
 
-        enableTheme()
-
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        adapter = TuningAdapter { value, pos -> presenter.updateTuning(pos) }
+        adapter.addItems(Arrays.asList(*resources.getStringArray(R.array.tunings)))
+        bottom_recycler.adapter = adapter
 
         presenter.showTuning()
         presenter.showPitchReference()
@@ -87,44 +106,26 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
         return false
     }
 
-    override fun updatePitchDifference(pitchDifference: PitchDifference?) {
-        val tunerView = this.findViewById<TunerView>(R.id.pitch)
-        if (tunerView != null) {
-            tunerView.setPitchDifference(pitchDifference)
-            tunerView.invalidate()
+    override fun updatePitchDifference(value: PitchDifference?) {
+        with(tunerView) {
+            setPitchDifference(value)
+            invalidate()
         }
     }
 
     override fun updatePitchReference(value: Int) {
-        val tunerView = this.findViewById<TunerView>(R.id.pitch)
-        if (tunerView != null) {
-            tunerView.setReferencePitch(value)
-            tunerView.invalidate()
+        with(tunerView) {
+            setReferencePitch(value)
+            invalidate()
         }
     }
 
-    override fun updateTuning(value: Int) {
-
-        val typedValue = TypedValue()
-        theme.resolveAttribute(android.R.attr.textColorPrimary, typedValue, true)
-        val textColor = typedValue.data
-
-        theme.resolveAttribute(R.attr.activityBackground, typedValue, true)
-        val bgColor = typedValue.data
-
-        val spinner = findViewById<MaterialSpinner>(R.id.tuning)
-        val adapter = MaterialSpinnerAdapter(this,
-                Arrays.asList(*resources.getStringArray(R.array.tunings)))
-
-        if (CytharaApplication.instance.darkModeEnabled) {
-            spinner.setTextColor(textColor)
-            spinner.setBackgroundColor(bgColor)
-            spinner.setArrowColor(textColor)
+    override fun updateTuning(value: Int, reload: Boolean) {
+        bottom_title.text = adapter.getItem(value)
+        if (reload) {
+            adapter.selection = value
+            adapter.notifyDataSetChanged()
         }
-
-        spinner.setAdapter(adapter)
-        spinner.setOnItemSelectedListener(this)
-        spinner.selectedIndex = value
     }
 
     override fun updateRecordState(value: Boolean) {
@@ -132,15 +133,13 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
     }
 
     override fun updateNotation(value: Boolean) {
-        val tunerView = this.findViewById<TunerView>(R.id.pitch)
-        if (tunerView != null) {
-            tunerView.setUseScientificNotation(value)
-            tunerView.invalidate()
+        with(tunerView) {
+            setUseScientificNotation(value)
+            invalidate()
         }
     }
 
     override fun openNotationDialog(value: Int) {
-
         val builder = AlertDialog.Builder(ContextThemeWrapper(this,
                 R.style.AppTheme))
         builder.setTitle(R.string.choose_notation)
@@ -148,7 +147,6 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
         ) { dialog, which ->
             presenter.updateNotation(which)
             dialog.dismiss()
-            val tunerView = findViewById<TunerView>(R.id.pitch)
             tunerView.invalidate()
         }
         builder.show()
@@ -159,7 +157,7 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
         val bundle = Bundle()
         bundle.putInt("current_value", value)
         dialog.arguments = bundle
-        dialog.show(fragmentManager, "number_picker")
+        dialog.show(supportFragmentManager, "pitch_dialog")
     }
 
     override fun onBackPressed() {
@@ -170,7 +168,7 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
                                             grantResults: IntArray) {
         when (requestCode) {
             RECORD_AUDIO_PERMISSION -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     startRecording()
                 } else {
                     val alertDialog = AlertDialog.Builder(this@MainActivity).create()
@@ -191,11 +189,7 @@ class MainActivity : AppCompatActivity(), MainView, MaterialSpinner.OnItemSelect
         }
     }
 
-    override fun onItemSelected(view: MaterialSpinner, position: Int, id: Long, item: Any) {
-        presenter.updateTuning(position)
-    }
-
-    override fun onValueChange(picker: NumberPicker, oldValue: Int, newValue: Int) {
+    override fun onValueChange(oldValue: Int, newValue: Int) {
         presenter.updatePitchReference(newValue)
     }
 

@@ -13,49 +13,47 @@ import be.tarsos.dsp.pitch.PitchProcessor.PitchEstimationAlgorithm.FFT_YIN
 import com.github.cythara.data.PitchAdjuster
 import com.github.cythara.data.TuningMapper
 import com.github.cythara.domain.*
-import java.util.*
 
 class MainPresenter internal constructor(private val view: MainView) : LifecycleObserver {
     private var pitchTask: PitchTask? = null
     private val preferences = SharedPref()
 
-    init {
-        pitchAdjuster = PitchAdjuster(preferences.pitchReference.toFloat())
-    }
+    private val pitchAdjuster: PitchAdjuster = PitchAdjuster(preferences.pitchReference.toFloat())
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     private fun onStop() {
         Log.d(LOG_TAG, "onStop: ")
-        if (pitchTask != null && !pitchTask!!.isCancelled) {
-            pitchTask?.stopAudioDispatcher()
-            pitchTask?.cancel(true)
-        }
+        stopRecording()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     private fun onPause() {
         Log.d(LOG_TAG, "onPause: ")
-        if (pitchTask != null && !pitchTask!!.isCancelled) {
-            pitchTask?.stopAudioDispatcher()
-            pitchTask?.cancel(true)
-        }
+        stopRecording()
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     private fun onResume() {
         Log.d(LOG_TAG, "onResume: ")
         if (pitchTask?.isCancelled == true) {
-            val tuning = TuningMapper.getTuningFromPosition(preferences.currentTuning)
-            pitchTask = PitchTask(view, tuning)
-            pitchTask?.execute()
+            startRecording()
         }
     }
 
     fun startRecording() {
         Log.d(LOG_TAG, "startRecording: ")
         val tuning = TuningMapper.getTuningFromPosition(preferences.currentTuning)
-        pitchTask = PitchTask(view, tuning)
-        pitchTask?.execute()
+        pitchTask = PitchTask(view, tuning, pitchAdjuster).apply { execute() }
+    }
+
+    private fun stopRecording() {
+        Log.d(LOG_TAG, "stopRecording: ")
+        pitchTask?.let {
+            if (!it.isCancelled) {
+                it.stopAudioDispatcher()
+                it.cancel(true)
+            }
+        }
     }
 
     fun updateNotation(value: Int) {
@@ -89,8 +87,8 @@ class MainPresenter internal constructor(private val view: MainView) : Lifecycle
 
     fun updatePitchReference(value: Int) {
         preferences.pitchReference = value
+        pitchAdjuster.setReference(value.toFloat())
         view.updatePitchReference(value)
-        pitchAdjuster = PitchAdjuster(value.toFloat())
     }
 
     fun showPitchReference() {
@@ -99,13 +97,14 @@ class MainPresenter internal constructor(private val view: MainView) : Lifecycle
 
     fun updateTuning(value: Int) {
         preferences.currentTuning = value
+        view.updateTuning(value,false)
     }
 
     fun showTuning() {
-        view.updateTuning(preferences.currentTuning)
+        view.updateTuning(preferences.currentTuning, true)
     }
 
-    private class PitchTask internal constructor(private val view: MainView?, private val tuning: Tuning) : AsyncTask<Void, PitchDifference, Void>() {
+    private class PitchTask internal constructor(private val view: MainView?, private val tuning: Tuning, private var pitchAdjuster: PitchAdjuster) : AsyncTask<Void, PitchDifference, Void>() {
         private var audioDispatcher: AudioDispatcher? = null
 
         override fun onPreExecute() {
@@ -122,7 +121,7 @@ class MainPresenter internal constructor(private val view: MainView) : Lifecycle
 
                 val pitch = pitchDetectionResult.pitch
                 if (pitch != -1f) {
-                    val adjustedPitch = pitchAdjuster!!.adjustPitch(pitch)
+                    val adjustedPitch = pitchAdjuster.adjustPitch(pitch)
                     val pitchDifference = PitchComparator.retrieveNote(tuning, adjustedPitch)
 
                     pitchDifferences.add(pitchDifference)
@@ -148,34 +147,31 @@ class MainPresenter internal constructor(private val view: MainView) : Lifecycle
         }
 
         override fun onProgressUpdate(vararg pitchDifference: PitchDifference) {
-            if (view != null) {
-                if (pitchDifference.isNotEmpty()) {
-                    view.updatePitchDifference(pitchDifference[0])
-                } else {
-                    view.updatePitchDifference(null)
-                }
+            if (pitchDifference.isNotEmpty()) {
+                view?.updatePitchDifference(pitchDifference[0])
+            } else {
+                view?.updatePitchDifference(null)
             }
         }
 
         internal fun stopAudioDispatcher() {
-            if (audioDispatcher != null && !audioDispatcher!!.isStopped) {
-                audioDispatcher!!.stop()
-                Log.d(LOG_TAG, "Audio Processor - stopped")
+            audioDispatcher?.let {
+                if (!it.isStopped) {
+                    it.stop()
+                    Log.d(LOG_TAG, "Audio Processor - stopped")
+                }
             }
-            view!!.updateRecordState(false)
+            view?.updateRecordState(false)
         }
     }
 
     companion object {
-
-        private val LOG_TAG = "MainPresenter"
-        private val SAMPLE_RATE = 44100
-        private val BUFFER_SIZE = 1024 * 4
-        private val OVERLAP = 768 * 4
-        private val MIN_ITEMS_COUNT = 15
-
-        private val pitchDifferences = ArrayList<PitchDifference>()
-        private var pitchAdjuster: PitchAdjuster? = null
+        private const val LOG_TAG = "MainPresenter"
+        private const val SAMPLE_RATE = 44100
+        private const val BUFFER_SIZE = 1024 * 4
+        private const val OVERLAP = 768 * 4
+        private const val MIN_ITEMS_COUNT = 15
+        private val pitchDifferences = arrayListOf<PitchDifference>()
     }
 
 }

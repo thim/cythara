@@ -3,11 +3,11 @@ package com.github.cythara.presentation.main
 import com.github.cythara.domain.PitchDifference
 
 interface MainView {
-    fun updatePitchDifference(percent: PitchDifference?)
+    fun updatePitchDifference(value: PitchDifference?)
 
     fun updatePitchReference(value: Int)
 
-    fun updateTuning(value: Int)
+    fun updateTuning(value: Int, reload: Boolean)
 
     fun updateRecordState(value: Boolean)
 

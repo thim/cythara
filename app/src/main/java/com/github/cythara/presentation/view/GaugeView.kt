@@ -4,21 +4,21 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import android.view.animation.LinearInterpolator
 import com.github.cythara.R
-import com.github.cythara.domain.PitchDifference
 
 class GaugeView : View {
-
     private val arcPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-
     private val colorPrimary: Int
     private val colorSecondary: Int
+    private var positionAnimator: ValueAnimator? = null
+    private var currentPointer: Float = 0f
+    private var currentValue: Float? = null
 
     init {
         val typedValue = TypedValue()
@@ -27,16 +27,15 @@ class GaugeView : View {
             context.theme.resolveAttribute(R.attr.gaugePrimaryColor, typedValue, true)
             typedValue.data
         } else {
-            resources.getColor(R.color.gray)
+            ContextCompat.getColor(context, R.color.gray)
         }
 
         colorSecondary = if (!isInEditMode) {
             context.theme.resolveAttribute(R.attr.gaugeSecondaryColor, typedValue, true)
             typedValue.data
         } else {
-            resources.getColor(R.color.grayDark)
+            ContextCompat.getColor(context, R.color.grayDark)
         }
-
     }
 
     constructor(context: Context) : super(context) {
@@ -57,8 +56,6 @@ class GaugeView : View {
         if (!isInEditMode) {
             arcPaint.typeface = ResourcesCompat.getFont(context, R.font.ubuntu_light)
         }
-
-
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -79,8 +76,7 @@ class GaugeView : View {
         arcPaint.strokeWidth = 10f
         arcPaint.strokeCap = Paint.Cap.ROUND
 
-        val textSize = resources.getDimensionPixelSize(R.dimen.numbersSmallTextSize)
-        arcPaint.textSize = textSize.toFloat()
+         arcPaint.textSize = resources.getDimensionPixelSize(R.dimen.numbersSmallTextSize).toFloat()
 
         val save = canvas.save()
         canvas.rotate(30f, arcCenterX, arcCenterY)
@@ -118,13 +114,11 @@ class GaugeView : View {
 
         canvas.rotate(currentPointer * 2, arcCenterX, arcCenterY)
 
-        canvas.drawLine(startX + 20, arcCenterY, arcCenterX - 10f, arcCenterY, arcPaint)
-
-
+        canvas.drawLine(startX + 30, arcCenterY, arcCenterX - 10f, arcCenterY, arcPaint)
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
 
         val width = measuredWidth
         val height = measuredHeight
@@ -142,18 +136,12 @@ class GaugeView : View {
         setMeasuredDimension(size + paddingLeft + paddingRight, size / 2 + paddingTop + paddingBottom)
     }
 
-
-    fun setPitchDifference(pitchDifference: PitchDifference) {
-        Log.d("TestView", "set: ${pitchDifference.deviation.toFloat()}")
-
-        val start = this.pitchDifference?.deviation?.toFloat() ?: 0f
-
-        this.pitchDifference = pitchDifference
-
-        val end = pitchDifference.deviation.toFloat()
+    fun setValue(value: Float) {
+        val oldValue = this.currentValue ?: 0f
+        this.currentValue = value
 
         positionAnimator?.cancel()
-        positionAnimator = ValueAnimator.ofFloat(start, end).apply {
+        positionAnimator = ValueAnimator.ofFloat(oldValue, value).apply {
             interpolator = LinearInterpolator()
             duration = 200
             addUpdateListener {
@@ -165,10 +153,5 @@ class GaugeView : View {
             }
             start()
         }
-
     }
-
-    private var positionAnimator: ValueAnimator? = null
-    private var currentPointer: Float = 0f
-    private var pitchDifference: PitchDifference? = null
 }

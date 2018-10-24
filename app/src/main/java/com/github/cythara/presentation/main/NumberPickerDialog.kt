@@ -63,5 +63,5 @@ class NumberPickerDialog : DialogFragment() {
 }
 
 interface OnValueChangeListener {
-    fun onValueChange(oldVal: Int, newVal: Int)
+    fun onValueChange(oldValue: Int, newValue: Int)
 }

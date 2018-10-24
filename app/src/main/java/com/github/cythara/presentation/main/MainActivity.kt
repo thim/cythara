@@ -13,22 +13,20 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.app.AppCompatDelegate
 import android.support.v7.widget.Toolbar
-import android.view.ContextThemeWrapper
-import android.view.Menu
-import android.view.MenuItem
-import android.view.WindowManager
+import android.view.*
 import com.github.cythara.CytharaApplication
 import com.github.cythara.R
 import com.github.cythara.domain.PitchDifference
-import com.github.cythara.presentation.view.TunerView
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.bottom_sheet_main.*
 import java.util.*
 
 class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
 
     private val presenter = MainPresenter(this)
-    private lateinit var tunerView: TunerView
+
     private lateinit var adapter: TuningAdapter
+    private lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         lifecycle.addObserver(presenter)
@@ -38,12 +36,10 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        tunerView = findViewById(R.id.pitch)
-
-        val bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
+        bottomSheetBehavior = BottomSheetBehavior.from(bottom_sheet)
         bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
 
-        bottom_title.setOnClickListener {
+        val click = View.OnClickListener {
             if (bottomSheetBehavior.state == BottomSheetBehavior.STATE_COLLAPSED) {
                 bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 bottom_icon.setImageResource(R.drawable.ic_chevron_down)
@@ -52,6 +48,9 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
                 bottom_icon.setImageResource(R.drawable.ic_chevron_up)
             }
         }
+
+        bottom_icon.setOnClickListener(click)
+        bottom_title.setOnClickListener(click)
 
 
         val permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
@@ -63,7 +62,12 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
             startRecording()
         }
 
-        adapter = TuningAdapter { value, pos -> presenter.updateTuning(pos) }
+        adapter = TuningAdapter { value, pos ->
+            run {
+                presenter.updateTuning(pos)
+                closeBottomSheet()
+            }
+        }
         adapter.addItems(Arrays.asList(*resources.getStringArray(R.array.tunings)))
         bottom_recycler.adapter = adapter
 
@@ -107,14 +111,14 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
     }
 
     override fun updatePitchDifference(value: PitchDifference?) {
-        with(tunerView) {
+        with(tuner_view) {
             setPitchDifference(value)
             invalidate()
         }
     }
 
     override fun updatePitchReference(value: Int) {
-        with(tunerView) {
+        with(tuner_view) {
             setReferencePitch(value)
             invalidate()
         }
@@ -133,7 +137,7 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
     }
 
     override fun updateNotation(value: Boolean) {
-        with(tunerView) {
+        with(tuner_view) {
             setUseScientificNotation(value)
             invalidate()
         }
@@ -147,7 +151,7 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
         ) { dialog, which ->
             presenter.updateNotation(which)
             dialog.dismiss()
-            tunerView.invalidate()
+            tuner_view.invalidate()
         }
         builder.show()
     }
@@ -193,9 +197,13 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
         presenter.updatePitchReference(newValue)
     }
 
+    private fun closeBottomSheet() {
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+        bottom_icon.setImageResource(R.drawable.ic_chevron_up)
+    }
+
     private fun startRecording() {
         presenter.startRecording()
-
     }
 
     private fun enableTheme() {

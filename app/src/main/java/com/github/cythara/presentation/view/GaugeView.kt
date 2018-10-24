@@ -149,6 +149,9 @@ class GaugeView : View {
                 if (currentPointer > 30f) {
                     currentPointer = 32f
                 }
+                if (currentPointer < -30f) {
+                    currentPointer = -32f
+                }
                 invalidate()
             }
             start()

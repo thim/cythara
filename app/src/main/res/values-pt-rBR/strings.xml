@@ -6,8 +6,18 @@
     <string name="permission_required">Permissão necessária</string>
     <string-array name="tunings">
         <item>Cromático</item>
-        <item>Cello</item>
+        <item>Vioncelo</item>
+        <item>Violino</item>
+        <item>Baixo</item>
+        <item>Guitarra</item>
+        <item>Guitarra (Drop C#)</item>
+        <item>Guitarra (Drop C)</item>
+        <item>Guitarra (Drop D)</item>
+        <item>Guitarra (Open G)</item>
+        <item>Ukulele</item>
+        <item>Ukulele (D tuning)</item>
     </string-array>
+
     <string-array name="notations">
         <item name="scientific">Notação científica</item>
         <item name="sol">Solfejo</item>

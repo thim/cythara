@@ -57,11 +57,9 @@
         android:gravity="center"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="@+id/note"
-        app:layout_constraintTop_toTopOf="@+id/note"
         app:layout_constraintCircle="@id/note"
-        app:layout_constraintCircleAngle="60"
-        app:layout_constraintCircleRadius="30dp"
+        app:layout_constraintCircleAngle="110"
+        app:layout_constraintCircleRadius="32dp"
         tools:text="3" />
 
     <TextView

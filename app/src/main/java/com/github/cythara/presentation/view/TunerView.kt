@@ -69,15 +69,16 @@ class TunerView @JvmOverloads constructor(context: Context, attrs: AttributeSet?
             noteStr = "A4 "
         }
 
-        reference.text = "Ref: "+ noteStr + String.format(Locale.ENGLISH, "= %d Hz", referencePitch)
+        reference.text = "Ref: " + noteStr + String.format(Locale.ENGLISH, "= %d Hz", referencePitch)
     }
 
     private fun getOctave(octave: Int): Int {
-        return if (useScientificNotation) {
-            octave
-        } else {
-            octave - 1
-        }
+        return octave
+//        if (useScientificNotation) {
+//            octave
+//        } else {
+//            octave - 1
+//        }
     }
 
     companion object {

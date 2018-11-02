@@ -97,7 +97,9 @@ class MainPresenter internal constructor(private val view: MainView) : Lifecycle
 
     fun updateTuning(value: Int) {
         preferences.currentTuning = value
-        view.updateTuning(value,false)
+        view.updateTuning(value, false)
+        stopRecording()
+        startRecording()
     }
 
     fun showTuning() {

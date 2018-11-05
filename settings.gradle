@@ -1,1 +1,1 @@
-include ':app', ':dsp'
+include ':app', ':dsp', ':base', ':instantapp'

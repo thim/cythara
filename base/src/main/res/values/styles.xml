@@ -1,5 +1,4 @@
 <resources>
-
     <attr name="headerStyle" format="reference" />
     <attr name="iconColorTheme" format="color" />
     <attr name="activityBackground" format="color" />

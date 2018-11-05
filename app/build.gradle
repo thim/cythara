@@ -5,7 +5,7 @@ android {
     buildToolsVersion rootProject.ext.buildTools
 
     defaultConfig {
-        applicationId "net.thm.cythara.app"
+        applicationId "net.thm.cythara"
         minSdkVersion rootProject.ext.minSDK
         targetSdkVersion rootProject.ext.targetSDK
         versionCode rootProject.ext.versionCode

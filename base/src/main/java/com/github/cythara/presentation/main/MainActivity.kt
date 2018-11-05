@@ -176,8 +176,8 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
                     startRecording()
                 } else {
                     val alertDialog = AlertDialog.Builder(this@MainActivity).create()
-                    alertDialog.setTitle(R.string.permission_required)
-                    alertDialog.setMessage("Microphone permission is required. App will be closed")
+                    alertDialog.setTitle(R.string.permission_title)
+                    alertDialog.setMessage(getString(R.string.permission_description))
                     alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK"
                     ) { dialog, which ->
                         dialog.dismiss()

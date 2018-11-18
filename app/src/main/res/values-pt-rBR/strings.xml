@@ -4,6 +4,7 @@
     <string name="set_notation">Definir notação</string>
     <string name="choose_notation">Escolher notação</string>
     <string name="permission_required">Permissão necessária</string>
+    <string name="permission_description">A permissão do microfone é necessária, o app será encerrado.</string>
     <string-array name="tunings">
         <item>Cromático</item>
         <item>Vioncelo</item>

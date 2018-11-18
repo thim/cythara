@@ -5,6 +5,7 @@
     <string name="toggle_dark_mode">Toggle dark mode</string>
     <string name="choose_notation">Choose notation</string>
     <string name="permission_required">Permission required</string>
+    <string name="permission_description">Microphone permission is required. App will be closed.</string>
     <string name="set_reference_pitch">Set reference pitch</string>
     <string name="choose_a_frequency">Choose a frequency:</string>
 

@@ -1,7 +1,13 @@
 [![Build Status](https://travis-ci.org/gstraube/cythara.svg?branch=master)](https://travis-ci.org/gstraube/cythara)
 
-# Cythara
-A musical instrument tuner for Android
+# Cythara - fork
+A musical instrument tuner for Android.
+
+It's a fork with same changes:
+* Converted the code to Kotlin
+* Organized the layers using Clean Code
+* Changed the layout (on wip)
+* Removed third-party components
 
 [<img src="https://f-droid.org/badge/get-it-on.png"
       alt="Get it on F-Droid"
@@ -39,17 +45,14 @@ In chronological order:
 * [tebriz159](https://github.com/tebriz159) created the logo
 * [toXel](https://github.com/toXel) provided the translation to German
 * [TacoTheDank](https://github.com/TacoTheDank) enabled the installation on external storage, upgraded the language level and updated dependencies
+* [thim](https://github.com/thim) added the cello tuning, fixed issues and updated library versions
 
 Thank you all!
 
 ## Screenshots
 
-![Listening to input](/fastlane/metadata/android/en-US/phoneScreenshots/listening.png?raw=true)
-
-![Providing feedback](/fastlane/metadata/android/en-US/phoneScreenshots/feedback.png?raw=true)
-
-![Listing tunings](/fastlane/metadata/android/en-US/phoneScreenshots/tunings.png?raw=true)
-
-![Listing frequencies](/fastlane/metadata/android/en-US/phoneScreenshots/choose_frequency.png?raw=true)
-
-![Listing notations](/fastlane/metadata/android/en-US/phoneScreenshots/choose_notation.png?raw=true)
+![Main screen](/screenshots/screen1.png?raw=true)
+![Tunings](/screenshots/screen2.png?raw=true)
+![Main screen dark mode](/screenshots/screen3.png?raw=true)
+![Choose frequency](/screenshots/screen4.png?raw=true)
+![Choose notation](/screenshots/screen5.png?raw=true)

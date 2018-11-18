@@ -51,8 +51,8 @@ Thank you all!
 
 ## Screenshots
 
-![Main screen](/screenshots/screen1.png?raw=true)
-![Tunings](/screenshots/screen2.png?raw=true)
-![Main screen dark mode](/screenshots/screen3.png?raw=true)
-![Choose frequency](/screenshots/screen4.png?raw=true)
-![Choose notation](/screenshots/screen5.png?raw=true)
+![Main screen](/screenshots/screen1.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Tunings](/screenshots/screen2.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Main screen dark mode](/screenshots/screen3.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Choose frequency](/screenshots/screen4.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Choose notation](/screenshots/screen5.png?raw=true) <!-- .element height="50%" width="50%" -->

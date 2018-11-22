@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity(), MainView, OnValueChangeListener {
         when (item.itemId) {
             R.id.show_privacy_policy -> {
                 val browserIntent = Intent(Intent.ACTION_VIEW,
-                        Uri.parse("https://gstraube.github.io/privacy_policy.html"))
+                        Uri.parse("https://thim.github.io/cythara/privacy.htm"))
                 startActivity(browserIntent)
             }
             R.id.set_notation -> {

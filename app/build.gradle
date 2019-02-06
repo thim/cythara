@@ -7,6 +7,7 @@ android {
     buildToolsVersion '28.0.2'
 
     defaultConfig {
+        applicationId "net.thm.cythara"
         minSdkVersion rootProject.ext.minSDK
         targetSdkVersion rootProject.ext.targetSDK
         versionCode rootProject.ext.versionCode

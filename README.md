@@ -1,26 +1,22 @@
-[![Build Status](https://travis-ci.org/gstraube/cythara.svg?branch=master)](https://travis-ci.org/gstraube/cythara)
+[![Build Status](https://travis-ci.org/thim/cythara.svg?branch=master)](https://travis-ci.org/thim/cythara)
 
-# Cythara - fork
+# Cythara
 A musical instrument tuner for Android.
 
-It's a fork with same changes:
+It's a fork from Cythara with same changes:
 * Converted the code to Kotlin
-* Organized the layers using Clean Code
-* Changed the layout (on wip)
+* Organized the layers using Clean Architecture
+* New layouts
 * Removed third-party components
 
-[<img src="https://f-droid.org/badge/get-it-on.png"
-      alt="Get it on F-Droid"
-      height="80">](https://f-droid.org/app/com.github.cythara)
 [<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
       alt="Get it on Google Play"
-      height="80">](https://play.google.com/store/apps/details?id=com.github.cythara)
+      height="80">](https://play.google.com/store/apps/details?id=net.thm.cythara)
 
 ## Functionality
 
 * Provides tunings for various instruments and supports chromatic tuning.
-* Changes background color from red to green to indicate that the pitch is in tune (with a tolerance of 10 cents).
-* Displays deviations between -60 and 60 cents.
+* Displays deviations between -30 and 30 cents.
 * Supports scientific pitch notation and Solfège.
 
 ## Tests

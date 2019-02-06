@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="textColorPrimary">#eee</color>
+    <color name="textColorSecondary">#bbb</color>
+    <color name="backgroundColor">#333</color>
+    <color name="headerColor">#666</color>
+    <color name="foregroundColor">#eee</color>
+
+    <!-- GAUGE COLORS-->
+    <color name="gaugePrimaryColor">@color/white</color>
+    <color name="gaugeSecondaryColor">@color/grayMedium</color>
+</resources>

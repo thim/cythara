@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Cythara</string>
+    <string name="privacy_policy">Show privacy policy</string>
+    <string name="set_notation">Set notation</string>
+    <string name="toggle_dark_mode">Toggle dark mode</string>
+    <string name="choose_notation">Choose notation</string>
+    <string name="permission_title">Permission required</string>
+    <string name="permission_description">Microphone permission is required. App will be closed</string>
+    <string name="set_reference_pitch">Set reference pitch</string>
+    <string name="choose_a_frequency">Choose a frequency:</string>
+
+    <string-array name="tunings">
+        <item>Chromatic</item>
+        <item>Cello</item>
+        <item>Violin</item>
+        <item>Bass</item>
+        <item>Guitar</item>
+        <item>Guitar (Drop C#)</item>
+        <item>Guitar (Drop C)</item>
+        <item>Guitar (Drop D)</item>
+        <item>Guitar (Open G)</item>
+        <item>Ukulele</item>
+        <item>Ukulele (D tuning)</item>
+    </string-array>
+
+    <string-array name="notations">
+        <item name="scientific">Scientific pitch notation</item>
+        <item name="sol">Solfège</item>
+    </string-array>
+</resources>

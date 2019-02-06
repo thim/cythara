@@ -1,0 +1,29 @@
+<resources>
+    <attr name="headerStyle" format="reference" />
+    <attr name="iconColorTheme" format="color" />
+    <attr name="activityBackground" format="color" />
+    <attr name="gaugePrimaryColor" format="color" />
+    <attr name="gaugeSecondaryColor" format="color" />
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
+
+        <item name="gaugePrimaryColor">@color/gaugePrimaryColor</item>
+        <item name="gaugeSecondaryColor">@color/gaugeSecondaryColor</item>
+
+        <item name="activityBackground">@color/backgroundColor</item>
+    </style>
+
+    <style name="RegularStyle">
+        <item name="android:fontFamily">@font/ubuntu_regular</item>
+    </style>
+
+    <style name="LightStyle">
+        <item name="android:fontFamily">@font/ubuntu_light</item>
+    </style>
+</resources>

@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/thim/cythara.svg?branch=master)](https://travis-ci.org/thim/cythara)
+[![Build Status](https://travis-ci.com/thim/cythara.svg?branch=master)](https://travis-ci.com/thim/cythara)
 
 # Cythara
 A musical instrument tuner for Android.
